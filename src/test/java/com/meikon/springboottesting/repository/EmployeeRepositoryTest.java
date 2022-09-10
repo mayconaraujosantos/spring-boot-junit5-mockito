@@ -1,5 +1,8 @@
 package com.meikon.springboottesting.repository;
 
+import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
+import java.util.ArrayList;
+import java.util.List;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -9,7 +12,7 @@ import com.meikon.springboottesting.domain.entity.Employee;
 import com.meikon.springboottesting.domain.repository.EmployeeRepository;
 
 @DataJpaTest
-public class EmployeeRepositoryTest {
+class EmployeeRepositoryTest {
 
   @Autowired
   private EmployeeRepository employeeRepository;
@@ -17,14 +20,37 @@ public class EmployeeRepositoryTest {
   // JUnit test for save employee operation
   @DisplayName("JUnit test for save employee operation")
   @Test
-  public void givenEmployeeObject_whenSave_thenReturnSavedEmployee() {
+  void givenEmployeeObject_whenSave_thenReturnSavedEmployee() {
     // given - precondition or setup
-    Employee employee = Employee.builder().firstName("firstName").lastName("lastName")
-        .email("email@gmail.com").build();
+    Employee employee = this.createPersistOfEmployee();
     // when - action or the behaviour that we are going test
     Employee savedEmployee = employeeRepository.save(employee);
     // then - verify the output
     Assertions.assertThat(savedEmployee).isNotNull();
     Assertions.assertThat(savedEmployee.getId()).isPositive();
   }
+
+  @DisplayName("JUnit test for get all employee operation")
+  @Test
+  void giveEmployeeList_whenFindAll_then() {
+     // given 
+    List<Employee> employee = createListOfEmployee();
+    employeeRepository.saveAll(employee);
+    // when 
+    List<Employee> employeeList = employeeRepository.findAll();
+    // then 
+    assertThat(employeeList).isNotNull();
+    assertThat(employeeList.size()).isEqualTo(2);
+  }
+
+  private Employee createPersistOfEmployee() {
+    return Employee.builder().firstName("firstName").lastName("lastName").email("marcos@gmail.com").build();
+  }
+  private List<Employee> createListOfEmployee() {
+    List<Employee> employeesList = new ArrayList<>();
+    employeesList.add(Employee.builder().firstName("Marcos").lastName("Santos").email("marcos@gmail.com").build());
+    employeesList.add(Employee.builder().firstName("Adriano").lastName("Lopes").email("adriano@mail.com").build());
+    return employeesList;
+  }
+
 }
