@@ -68,6 +68,24 @@ class EmployeeRepositoryTest {
     // then
     assertThat(employeeEmail).isNotNull();
   }
+  
+  @DisplayName("JUnit test for update employee operation")
+  @Test
+  void givenEmployeeObject_whenUpdateEmployee_thenReturnUpdatedEmployee() {
+    // given
+    Employee employee = createPersistOfEmployee();
+    employeeRepository.save(employee);
+    // when
+    Employee savedEmployee = employeeRepository.findById(employee.getId()).get();
+    savedEmployee.setFirstName("Fernanda");
+    savedEmployee.setLastName("Souza");
+    savedEmployee.setEmail("ad@gmail.com");
+    Employee updatedEmployee = employeeRepository.save(savedEmployee);
+    // then
+    assertThat(updatedEmployee.getEmail()).isNotNull().isEqualTo("ad@gmail.com");
+    assertThat(updatedEmployee.getFirstName()).isNotNull().isEqualTo("Fernanda");
+    assertThat(updatedEmployee.getLastName()).isNotNull().isEqualTo("Souza");
+  }
 
   private Employee createPersistOfEmployee() {
     return Employee.builder().firstName("firstName").lastName("lastName").email("marcos@gmail.com").build();
