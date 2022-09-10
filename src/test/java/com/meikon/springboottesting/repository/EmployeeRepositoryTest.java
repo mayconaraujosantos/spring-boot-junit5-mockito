@@ -56,6 +56,18 @@ class EmployeeRepositoryTest {
     // then
     assertThat(employeeId).isNotNull();
   }
+  
+  @DisplayName("JUnit test for get employee by email operation")
+  @Test
+  void givenEmployeeEmail_whenFindByEmail_thenReturnEmployeeObject() {
+    // given
+      Employee employee = createPersistOfEmployee(); 
+      employeeRepository.save(employee);
+    // when
+    Optional<Employee> employeeEmail = employeeRepository.findByEmail(employee.getEmail());
+    // then
+    assertThat(employeeEmail).isNotNull();
+  }
 
   private Employee createPersistOfEmployee() {
     return Employee.builder().firstName("firstName").lastName("lastName").email("marcos@gmail.com").build();
