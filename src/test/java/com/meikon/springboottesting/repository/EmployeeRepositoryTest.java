@@ -3,6 +3,8 @@ package com.meikon.springboottesting.repository;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
+
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -41,6 +43,18 @@ class EmployeeRepositoryTest {
     // then 
     assertThat(employeeList).isNotNull();
     assertThat(employeeList.size()).isEqualTo(2);
+  }
+  
+  @DisplayName("JUnit test for get employee by id operation")
+  @Test
+  void givenEmployeeObject_whenFindById_thenReturnEmployeeObject() {
+    // given
+    Employee employee = createPersistOfEmployee();
+    employeeRepository.save(employee);
+    // when
+    Optional<Employee> employeeId = employeeRepository.findById(employee.getId());
+    // then
+    assertThat(employeeId).isNotNull();
   }
 
   private Employee createPersistOfEmployee() {
