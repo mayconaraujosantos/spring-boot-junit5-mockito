@@ -86,6 +86,19 @@ class EmployeeRepositoryTest {
     assertThat(updatedEmployee.getFirstName()).isNotNull().isEqualTo("Fernanda");
     assertThat(updatedEmployee.getLastName()).isNotNull().isEqualTo("Souza");
   }
+  @DisplayName("JUnit test for delete employee operation")
+  @Test
+  void givenEmployeeObject_whenDelete_thenReturnRemoveEmployee() {
+    // given
+    Employee employee = createPersistOfEmployee();
+    employeeRepository.save(employee);
+    // when
+    employeeRepository.delete(employee);
+    Optional<Employee> employeeOptional = employeeRepository.findById(employee.getId());
+    // then
+    assertThat(employeeOptional).isEmpty();
+  }
+  
 
   private Employee createPersistOfEmployee() {
     return Employee.builder().firstName("firstName").lastName("lastName").email("marcos@gmail.com").build();
