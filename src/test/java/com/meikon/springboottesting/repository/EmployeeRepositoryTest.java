@@ -107,7 +107,20 @@ class EmployeeRepositoryTest {
     String firstName = "firstName";
     String lastName = "lastName";
     // when
-    Employee savedEmployee = employeeRepository.findbyJPQL(firstName, lastName);
+    Employee savedEmployee = employeeRepository.findByJPQL(firstName, lastName);
+    // then
+    assertThat(savedEmployee).isNotNull();
+  }
+  @DisplayName("JUnit test for custom query using JPQL with Named params in employee operation")
+  @Test
+  void givenFirstNameNadLastName_whenFindByJPQLNamedParams_thenReturnEmployeeObject() {
+    // given
+    Employee employee = createPersistOfEmployee();
+    employeeRepository.save(employee);
+    String firstName = "firstName";
+    String lastName = "lastName";
+    // when
+    Employee savedEmployee = employeeRepository.findByJPQLNamedParams(firstName, lastName);
     // then
     assertThat(savedEmployee).isNotNull();
   }
