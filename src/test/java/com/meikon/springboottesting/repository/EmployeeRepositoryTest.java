@@ -124,6 +124,17 @@ class EmployeeRepositoryTest {
     // then
     assertThat(savedEmployee).isNotNull();
   }
+  @DisplayName("JUnit test for custom query using native SQL with index")
+  @Test
+  void giveFirstNameAndLastName_whenFindByNativeSQL_thenReturnEmployeeObject() {
+    // given
+    Employee employee = createPersistOfEmployee();
+    employeeRepository.save(employee);
+    // when
+    Employee savedEmployee = employeeRepository.findByNativeSQL(employee.getFirstName(), employee.getLastName());
+    // then
+    assertThat(savedEmployee).isNotNull();
+  }
   
 
   private Employee createPersistOfEmployee() {
