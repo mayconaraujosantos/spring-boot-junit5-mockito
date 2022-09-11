@@ -98,6 +98,19 @@ class EmployeeRepositoryTest {
     // then
     assertThat(employeeOptional).isEmpty();
   }
+  @DisplayName("JUnit test for custom query using JPQL employee operation")
+  @Test
+  void givenFirstNameNadLastName_whenFindByJPQL_thenReturnEmployeeObject() {
+    // given
+    Employee employee = createPersistOfEmployee();
+    employeeRepository.save(employee);
+    String firstName = "firstName";
+    String lastName = "lastName";
+    // when
+    Employee savedEmployee = employeeRepository.findbyJPQL(firstName, lastName);
+    // then
+    assertThat(savedEmployee).isNotNull();
+  }
   
 
   private Employee createPersistOfEmployee() {
