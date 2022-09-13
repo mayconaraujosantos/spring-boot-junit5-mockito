@@ -7,6 +7,7 @@ import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.junit.jupiter.api.BeforeEach;
@@ -58,6 +59,18 @@ class EmployeeServiceTest {
     ResourceNotFoundException thrown = catchThrowableOfType(() -> employeeService.saveEmployee(employee), ResourceNotFoundException.class);
     // then
     assertThat(thrown).hasMessage("Employee already exist with given email: " + employee.getEmail()).hasNoCause();
+  }
 
+  @DisplayName("JUnit test for get all employees method")
+  @Test
+  void givenEmployeeList_whenGetAllEmployees_thenReturnEmployeesList() {
+    // given
+    var employeeBuild = Employee.builder().id(2L).firstName("firstName").lastName("lastName").email("email@gmail.com").build();
+    given(employeeRepository.findAll()).willReturn(List.of(employee, employeeBuild));
+    // when
+    List<Employee> employeeList = employeeService.getAllEmployee();
+    // then
+    assertThat(employeeList).isNotNull();
+    assertThat(employeeList.size()).isEqualTo(2);
   }
 }
