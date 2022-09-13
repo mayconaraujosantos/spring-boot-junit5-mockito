@@ -1,5 +1,6 @@
 package com.meikon.springboottesting.domain.service.impl;
 
+import java.util.List;
 import java.util.Optional;
 import org.springframework.stereotype.Service;
 import com.meikon.springboottesting.domain.entity.Employee;
@@ -10,7 +11,7 @@ import com.meikon.springboottesting.domain.service.EmployeeService;
 @Service
 public class EmployeeServiceImpl implements EmployeeService {
 
-  private EmployeeRepository employeeRepository;
+  private final EmployeeRepository employeeRepository;
 
   public EmployeeServiceImpl(EmployeeRepository employeeRepository) {
     this.employeeRepository = employeeRepository;
@@ -24,6 +25,11 @@ public class EmployeeServiceImpl implements EmployeeService {
           "Employee already exist with given email: " + employee.getEmail());
     }
     return employeeRepository.save(employee);
+  }
+
+  @Override
+  public List<Employee> getAllEmployee() {
+    return employeeRepository.findAll();
   }
 
 
