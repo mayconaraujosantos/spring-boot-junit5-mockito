@@ -2,14 +2,9 @@ package com.meikon.springboottesting.service;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.assertj.core.api.AssertionsForClassTypes.catchThrowableOfType;
-import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
-import static org.mockito.Mockito.never;
-import static org.mockito.Mockito.verify;
-
 import java.util.List;
 import java.util.Optional;
-
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -72,5 +67,17 @@ class EmployeeServiceTest {
     // then
     assertThat(employeeList).isNotNull();
     assertThat(employeeList.size()).isEqualTo(2);
+  }
+
+  @DisplayName("JUnit test for get employees method")
+  @Test
+  void givenEmployeeId_whenGetEmployeeById_thenReturnEmployeeObject() {
+    // given
+    given(employeeRepository.findById(1L)).willReturn(Optional.of(employee));
+    // when 
+    Employee foundEmployee = employeeService.getEmployeeById(employee.getId()).get();
+
+    // then
+    assertThat(foundEmployee).isNotNull();
   }
 }
