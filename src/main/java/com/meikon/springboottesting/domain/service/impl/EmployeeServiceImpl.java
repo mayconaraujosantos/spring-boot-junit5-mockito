@@ -42,5 +42,10 @@ public class EmployeeServiceImpl implements EmployeeService {
     return employeeRepository.save(employeeUpdated);
   }
 
+  @Override
+  public void deleteEmployee(long id) {
+    employeeRepository.deleteById(id);
+  }
+
 
 }
