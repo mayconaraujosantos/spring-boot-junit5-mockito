@@ -30,7 +30,8 @@ class EmployeeServiceTest {
 
   @BeforeEach
   void setup() {
-    employee = Employee.builder().id(1L).firstName("firstName").lastName("lastName").email("m@gmail.com").build();
+    employee = Employee.builder().id(1L).firstName("firstName").lastName("lastName")
+        .email("m@gmail.com").build();
   }
 
   @DisplayName("JUnit for save employee method")
@@ -51,16 +52,19 @@ class EmployeeServiceTest {
     // given
     given(employeeRepository.findByEmail(employee.getEmail())).willReturn(Optional.of(employee));
     // when
-    ResourceNotFoundException thrown = catchThrowableOfType(() -> employeeService.saveEmployee(employee), ResourceNotFoundException.class);
+    ResourceNotFoundException thrown = catchThrowableOfType(
+        () -> employeeService.saveEmployee(employee), ResourceNotFoundException.class);
     // then
-    assertThat(thrown).hasMessage("Employee already exist with given email: " + employee.getEmail()).hasNoCause();
+    assertThat(thrown).hasMessage("Employee already exist with given email: " + employee.getEmail())
+        .hasNoCause();
   }
 
   @DisplayName("JUnit test for get all employees method")
   @Test
   void givenEmployeeList_whenGetAllEmployees_thenReturnEmployeesList() {
     // given
-    var employeeBuild = Employee.builder().id(2L).firstName("firstName").lastName("lastName").email("email@gmail.com").build();
+    var employeeBuild = Employee.builder().id(2L).firstName("firstName").lastName("lastName")
+        .email("email@gmail.com").build();
     given(employeeRepository.findAll()).willReturn(List.of(employee, employeeBuild));
     // when
     List<Employee> employeeList = employeeService.getAllEmployee();
@@ -74,10 +78,24 @@ class EmployeeServiceTest {
   void givenEmployeeId_whenGetEmployeeById_thenReturnEmployeeObject() {
     // given
     given(employeeRepository.findById(1L)).willReturn(Optional.of(employee));
-    // when 
+    // when
     Employee foundEmployee = employeeService.getEmployeeById(employee.getId()).get();
 
     // then
     assertThat(foundEmployee).isNotNull();
+  }
+
+  @DisplayName("JUnit test for updatedEmployee method")
+  @Test
+  void givenEmployeeUpdate_whenUpdateEmployee_thenReturnUpdatedEmployee() {
+    // given
+    given(employeeRepository.save(employee)).willReturn(employee);
+    employee.setEmail("ma@gmail.com");
+    employee.setFirstName("firstNames");
+    // when
+    Employee updatedEmployee = employeeService.updatedEmployee(employee);
+    // then
+    assertThat(updatedEmployee.getEmail()).isEqualTo("ma@gmail.com");
+    assertThat(updatedEmployee.getFirstName()).isEqualTo("firstNames");
   }
 }
