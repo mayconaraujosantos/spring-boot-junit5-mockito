@@ -3,6 +3,7 @@ package com.meikon.springboottesting.controller;
 import static org.hamcrest.CoreMatchers.is;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
@@ -11,13 +12,19 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.meikon.springboottesting.domain.entity.Employee;
 import com.meikon.springboottesting.domain.service.EmployeeService;
+import java.util.ArrayList;
+import java.util.List;
+import org.hamcrest.CoreMatchers;
 import org.junit.jupiter.api.Test;
+import org.mockito.BDDMockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
+import org.springframework.test.web.servlet.result.MockMvcResultHandlers;
+import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
 @WebMvcTest
 class EmployeeControllerTest {
@@ -57,5 +64,22 @@ class EmployeeControllerTest {
         is(employee.getLastName())))
       .andExpect(jsonPath("$.email",
         is(employee.getEmail())));
+  }
+
+  @Test
+  void givenListOfEmployees_whenGetAllEmployees_thenReturnEmployeeList() throws Exception {
+    // given - precondition or setup
+    List<Employee> listOfEmployee = new ArrayList<>();
+    listOfEmployee.add(
+      Employee.builder().firstName("firstName").lastName("lastName").email("m@gmail.com").build());
+    listOfEmployee.add(
+      Employee.builder().firstName("firstName").lastName("lastName").email("a@gmail.com").build());
+    BDDMockito.given(employeeService.getAllEmployee()).willReturn(listOfEmployee);
+    // when - action or behaviour that we are going test
+    ResultActions response = mockMvc.perform(get(EMPLOYEE_URL));
+    // then - verify the result or output using assert statements
+    response.andExpect(MockMvcResultMatchers.status().isOk())
+      .andDo(MockMvcResultHandlers.print())
+      .andExpect(MockMvcResultMatchers.jsonPath("$.size()", CoreMatchers.is(listOfEmployee.size())));
   }
 }
