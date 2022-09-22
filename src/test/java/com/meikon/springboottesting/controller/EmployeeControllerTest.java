@@ -14,9 +14,9 @@ import com.meikon.springboottesting.domain.entity.Employee;
 import com.meikon.springboottesting.domain.service.EmployeeService;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import org.hamcrest.CoreMatchers;
 import org.junit.jupiter.api.Test;
-import org.mockito.BDDMockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
@@ -80,6 +80,29 @@ class EmployeeControllerTest {
     // then - verify the result or output using assert statements
     response.andExpect(MockMvcResultMatchers.status().isOk())
       .andDo(MockMvcResultHandlers.print())
-      .andExpect(MockMvcResultMatchers.jsonPath("$.size()", CoreMatchers.is(listOfEmployee.size())));
+      .andExpect(
+        MockMvcResultMatchers.jsonPath("$.size()", CoreMatchers.is(listOfEmployee.size())));
   }
+
+  @Test
+  void givenEmployeeId_whenGetByIdEmployees_thenReturnEmployeeList() throws Exception {
+    // given - precondition or setup
+    long employeeId = 1L;
+    var employee = Employee.builder()
+      .firstName("firstName")
+      .lastName("lastName")
+      .email("m@gmail.com")
+      .build();
+    given(employeeService.getEmployeeById(employeeId)).willReturn(Optional.of(employee));
+    // when - action or behaviour that we are going test
+    ResultActions response = mockMvc.perform(get(EMPLOYEE_URL + "/{id}", employeeId));
+    // then - verify the result or output using assert statements
+    response.andExpect(status().isOk())
+      .andDo(print())
+      .andExpect(jsonPath("$.firstName", is(employee.getFirstName())))
+      .andExpect(jsonPath("$.lastName", is(employee.getLastName())))
+      .andExpect(jsonPath("$.email", is(employee.getEmail())));
+  }
+
+
 }
