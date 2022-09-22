@@ -1,8 +1,9 @@
 package com.meikon.springboottesting.domain.service;
 
+import com.meikon.springboottesting.domain.entity.Employee;
 import java.util.List;
 import java.util.Optional;
-import com.meikon.springboottesting.domain.entity.Employee;
+
 
 public interface EmployeeService {
   Employee saveEmployee(Employee employee);
@@ -12,6 +13,6 @@ public interface EmployeeService {
   Optional<Employee> getEmployeeById(long id);
 
   Employee updatedEmployee(Employee employeeUpdated);
-  
+
   void deleteEmployee(long id);
 }

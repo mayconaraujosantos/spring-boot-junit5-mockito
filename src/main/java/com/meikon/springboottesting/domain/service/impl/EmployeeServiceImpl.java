@@ -1,12 +1,12 @@
 package com.meikon.springboottesting.domain.service.impl;
 
-import java.util.List;
-import java.util.Optional;
-import org.springframework.stereotype.Service;
 import com.meikon.springboottesting.domain.entity.Employee;
 import com.meikon.springboottesting.domain.exception.ResourceNotFoundException;
 import com.meikon.springboottesting.domain.repository.EmployeeRepository;
 import com.meikon.springboottesting.domain.service.EmployeeService;
+import java.util.List;
+import java.util.Optional;
+import org.springframework.stereotype.Service;
 
 @Service
 public class EmployeeServiceImpl implements EmployeeService {
@@ -22,7 +22,7 @@ public class EmployeeServiceImpl implements EmployeeService {
     Optional<Employee> savedEmployee = employeeRepository.findByEmail(employee.getEmail());
     if (savedEmployee.isPresent()) {
       throw new ResourceNotFoundException(
-          "Employee already exist with given email: " + employee.getEmail());
+        "Employee already exist with given email: " + employee.getEmail());
     }
     return employeeRepository.save(employee);
   }
@@ -46,6 +46,4 @@ public class EmployeeServiceImpl implements EmployeeService {
   public void deleteEmployee(long id) {
     employeeRepository.deleteById(id);
   }
-
-
 }
