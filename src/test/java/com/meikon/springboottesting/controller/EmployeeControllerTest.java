@@ -74,7 +74,7 @@ class EmployeeControllerTest {
       Employee.builder().firstName("firstName").lastName("lastName").email("m@gmail.com").build());
     listOfEmployee.add(
       Employee.builder().firstName("firstName").lastName("lastName").email("a@gmail.com").build());
-    BDDMockito.given(employeeService.getAllEmployee()).willReturn(listOfEmployee);
+    given(employeeService.getAllEmployee()).willReturn(listOfEmployee);
     // when - action or behaviour that we are going test
     ResultActions response = mockMvc.perform(get(EMPLOYEE_URL));
     // then - verify the result or output using assert statements
