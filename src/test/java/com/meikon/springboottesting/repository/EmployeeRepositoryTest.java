@@ -1,6 +1,9 @@
 package com.meikon.springboottesting.repository;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
+
+import com.meikon.springboottesting.domain.entity.Employee;
+import com.meikon.springboottesting.domain.repository.EmployeeRepository;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -10,20 +13,22 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
-import com.meikon.springboottesting.domain.entity.Employee;
-import com.meikon.springboottesting.domain.repository.EmployeeRepository;
 
 @DataJpaTest
 class EmployeeRepositoryTest {
 
-  @Autowired
-  private EmployeeRepository employeeRepository;
+  @Autowired private EmployeeRepository employeeRepository;
 
   private Employee employee;
 
   @BeforeEach
   void setup() {
-    employee = Employee.builder().firstName("firstName").lastName("lastName").email("marcos@gmail.com").build();
+    employee =
+        Employee.builder()
+            .firstName("firstName")
+            .lastName("lastName")
+            .email("marcos@gmail.com")
+            .build();
   }
 
   // JUnit test for save employee operation
@@ -120,7 +125,8 @@ class EmployeeRepositoryTest {
   void giveFirstNameAndLastName_whenFindByNativeSQL_thenReturnEmployeeObject() {
     employeeRepository.save(employee);
 
-    Employee savedEmployee = employeeRepository.findByNativeSQL(employee.getFirstName(), employee.getLastName());
+    Employee savedEmployee =
+        employeeRepository.findByNativeSQL(employee.getFirstName(), employee.getLastName());
 
     assertThat(savedEmployee).isNotNull();
   }
@@ -130,16 +136,26 @@ class EmployeeRepositoryTest {
   void giveFirstNameAndLastName_whenFindByNativeSQLNamedParams_thenReturnEmployeeObject() {
     employeeRepository.save(employee);
 
-    Employee savedEmployee = employeeRepository.findByNativeSQLNamed(employee.getFirstName(), employee.getLastName());
+    Employee savedEmployee =
+        employeeRepository.findByNativeSQLNamed(employee.getFirstName(), employee.getLastName());
 
     assertThat(savedEmployee).isNotNull();
   }
-  
+
   private List<Employee> createListOfEmployee() {
     List<Employee> employeesList = new ArrayList<>();
-    employeesList.add(Employee.builder().firstName("Marcos").lastName("Santos").email("marcos@gmail.com").build());
-    employeesList.add(Employee.builder().firstName("Adriano").lastName("Lopes").email("adriano@mail.com").build());
+    employeesList.add(
+        Employee.builder()
+            .firstName("Marcos")
+            .lastName("Santos")
+            .email("marcos@gmail.com")
+            .build());
+    employeesList.add(
+        Employee.builder()
+            .firstName("Adriano")
+            .lastName("Lopes")
+            .email("adriano@mail.com")
+            .build());
     return employeesList;
   }
-
 }
