@@ -93,7 +93,7 @@ class EmployeeServiceTest {
     // given
     given(employeeRepository.findById(1L)).willReturn(Optional.of(employee));
     // when
-    Employee foundEmployee = employeeService.getEmployeeById(employee.getId()).get();
+    Employee foundEmployee = employeeService.getEmployeeById(employee.getId()).orElse(null);
 
     // then
     assertThat(foundEmployee).isNotNull();

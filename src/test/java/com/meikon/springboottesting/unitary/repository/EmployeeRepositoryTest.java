@@ -74,7 +74,7 @@ class EmployeeRepositoryTest {
   @Test
   void givenEmployeeObject_whenUpdateEmployee_thenReturnUpdatedEmployee() {
     employeeRepository.save(employee);
-    Employee savedEmployee = employeeRepository.findById(employee.getId()).get();
+    Employee savedEmployee = employeeRepository.findById(employee.getId()).orElse(null);
     savedEmployee.setFirstName("Fernanda");
     savedEmployee.setLastName("Souza");
     savedEmployee.setEmail("ad@gmail.com");
