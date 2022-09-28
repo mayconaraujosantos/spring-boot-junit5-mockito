@@ -3,6 +3,8 @@ package com.meikon.springboottesting.unitary.controller;
 import static org.hamcrest.CoreMatchers.is;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
+import static org.mockito.BDDMockito.willDoNothing;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
@@ -182,4 +184,18 @@ class EmployeeControllerTest {
       .andDo(print());
   }
 
+  @Test
+  void givenEmployeeId_whenDeleteEmployee_thenReturn200() throws Exception {
+    // given - precondition or setup
+    long employeeId = 1L;
+    willDoNothing().given(employeeService).deleteEmployee(employeeId);
+
+    // when -  action or the behaviour that we are going test
+    ResultActions response = mockMvc.perform(delete("/api/employees/{id}", employeeId));
+
+    // then - verify the output
+    response.andExpect(status().isOk())
+      .andDo(print());
+  }
+  
 }
