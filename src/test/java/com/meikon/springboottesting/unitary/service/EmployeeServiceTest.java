@@ -107,7 +107,7 @@ class EmployeeServiceTest {
     employee.setEmail("ma@gmail.com");
     employee.setFirstName("firstNames");
     // when
-    Employee updatedEmployee = employeeService.updatedEmployee(employee);
+    Employee updatedEmployee = employeeService.updateEmployee(employee);
     // then
     assertThat(updatedEmployee.getEmail()).isEqualTo("ma@gmail.com");
     assertThat(updatedEmployee.getFirstName()).isEqualTo("firstNames");

@@ -12,7 +12,7 @@ public interface EmployeeService {
 
   Optional<Employee> getEmployeeById(long id);
 
-  Employee updatedEmployee(Employee employeeUpdated);
+  Employee updateEmployee(Employee employeeUpdated);
 
   void deleteEmployee(long id);
 }
