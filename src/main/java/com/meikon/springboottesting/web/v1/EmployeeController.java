@@ -8,6 +8,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
@@ -25,7 +26,7 @@ public class EmployeeController {
 
   @PostMapping
   @ResponseStatus(HttpStatus.CREATED)
-   public Employee createEmployee(@RequestBody Employee employee) {
+  public Employee createEmployee(@RequestBody Employee employee) {
     return employeeService.saveEmployee(employee);
   }
 
@@ -33,11 +34,28 @@ public class EmployeeController {
   public List<Employee> getAllEmployee() {
     return employeeService.getAllEmployee();
   }
-  
-  @GetMapping("/{id}")
+
+  @GetMapping("{id}")
   public ResponseEntity<Employee> getEmployeeById(@PathVariable("id") long employeeId) {
     return employeeService.getEmployeeById(employeeId)
       .map(ResponseEntity::ok)
+      .orElseGet(() -> ResponseEntity.notFound().build());
+  }
+
+  @PutMapping("{id}")
+  public ResponseEntity<Employee> updateEmployee(@PathVariable("id") long employeeId,
+    @RequestBody Employee employee) {
+    return employeeService.getEmployeeById(employeeId)
+      .map(savedEmployee -> {
+
+        savedEmployee.setFirstName(employee.getFirstName());
+        savedEmployee.setLastName(employee.getLastName());
+        savedEmployee.setEmail(employee.getEmail());
+
+        Employee updatedEmployee = employeeService.updateEmployee(savedEmployee);
+        return new ResponseEntity<>(updatedEmployee, HttpStatus.OK);
+
+      })
       .orElseGet(() -> ResponseEntity.notFound().build());
   }
 }
