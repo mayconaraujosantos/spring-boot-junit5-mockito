@@ -1,4 +1,4 @@
-package com.meikon.springboottesting.repository;
+package com.meikon.springboottesting.unitary.repository;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
@@ -17,18 +17,20 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 @DataJpaTest
 class EmployeeRepositoryTest {
 
-  @Autowired private EmployeeRepository employeeRepository;
+  @Autowired
+  private EmployeeRepository employeeRepository;
 
   private Employee employee;
 
   @BeforeEach
   void setup() {
     employee =
-        Employee.builder()
-            .firstName("firstName")
-            .lastName("lastName")
-            .email("marcos@gmail.com")
-            .build();
+      Employee
+        .builder()
+        .firstName("firstName")
+        .lastName("lastName")
+        .email("marcos@gmail.com")
+        .build();
   }
 
   // JUnit test for save employee operation
@@ -56,7 +58,9 @@ class EmployeeRepositoryTest {
   @Test
   void givenEmployeeObject_whenFindById_thenReturnEmployeeObject() {
     employeeRepository.save(employee);
-    Optional<Employee> employeeId = employeeRepository.findById(employee.getId());
+    Optional<Employee> employeeId = employeeRepository.findById(
+      employee.getId()
+    );
 
     assertThat(employeeId).isNotNull();
   }
@@ -65,7 +69,9 @@ class EmployeeRepositoryTest {
   @Test
   void givenEmployeeEmail_whenFindByEmail_thenReturnEmployeeObject() {
     employeeRepository.save(employee);
-    Optional<Employee> employeeEmail = employeeRepository.findByEmail(employee.getEmail());
+    Optional<Employee> employeeEmail = employeeRepository.findByEmail(
+      employee.getEmail()
+    );
 
     assertThat(employeeEmail).isNotNull();
   }
@@ -74,14 +80,20 @@ class EmployeeRepositoryTest {
   @Test
   void givenEmployeeObject_whenUpdateEmployee_thenReturnUpdatedEmployee() {
     employeeRepository.save(employee);
-    Employee savedEmployee = employeeRepository.findById(employee.getId()).orElse(null);
+    Employee savedEmployee = employeeRepository
+      .findById(employee.getId())
+      .orElse(null);
     savedEmployee.setFirstName("Fernanda");
     savedEmployee.setLastName("Souza");
     savedEmployee.setEmail("ad@gmail.com");
     Employee updatedEmployee = employeeRepository.save(savedEmployee);
 
-    assertThat(updatedEmployee.getEmail()).isNotNull().isEqualTo("ad@gmail.com");
-    assertThat(updatedEmployee.getFirstName()).isNotNull().isEqualTo("Fernanda");
+    assertThat(updatedEmployee.getEmail())
+      .isNotNull()
+      .isEqualTo("ad@gmail.com");
+    assertThat(updatedEmployee.getFirstName())
+      .isNotNull()
+      .isEqualTo("Fernanda");
     assertThat(updatedEmployee.getLastName()).isNotNull().isEqualTo("Souza");
   }
 
@@ -90,7 +102,9 @@ class EmployeeRepositoryTest {
   void givenEmployeeObject_whenDelete_thenReturnRemoveEmployee() {
     employeeRepository.save(employee);
     employeeRepository.delete(employee);
-    Optional<Employee> employeeOptional = employeeRepository.findById(employee.getId());
+    Optional<Employee> employeeOptional = employeeRepository.findById(
+      employee.getId()
+    );
 
     assertThat(employeeOptional).isEmpty();
   }
@@ -108,14 +122,19 @@ class EmployeeRepositoryTest {
     assertThat(savedEmployee).isNotNull();
   }
 
-  @DisplayName("JUnit test for custom query using JPQL with Named params in employee operation")
+  @DisplayName(
+    "JUnit test for custom query using JPQL with Named params in employee operation"
+  )
   @Test
   void givenFirstNameNadLastName_whenFindByJPQLNamedParams_thenReturnEmployeeObject() {
     employeeRepository.save(employee);
     String firstName = "firstName";
     String lastName = "lastName";
 
-    Employee savedEmployee = employeeRepository.findByJPQLNamedParams(firstName, lastName);
+    Employee savedEmployee = employeeRepository.findByJPQLNamedParams(
+      firstName,
+      lastName
+    );
 
     assertThat(savedEmployee).isNotNull();
   }
@@ -125,8 +144,10 @@ class EmployeeRepositoryTest {
   void giveFirstNameAndLastName_whenFindByNativeSQL_thenReturnEmployeeObject() {
     employeeRepository.save(employee);
 
-    Employee savedEmployee =
-        employeeRepository.findByNativeSQL(employee.getFirstName(), employee.getLastName());
+    Employee savedEmployee = employeeRepository.findByNativeSQL(
+      employee.getFirstName(),
+      employee.getLastName()
+    );
 
     assertThat(savedEmployee).isNotNull();
   }
@@ -136,8 +157,10 @@ class EmployeeRepositoryTest {
   void giveFirstNameAndLastName_whenFindByNativeSQLNamedParams_thenReturnEmployeeObject() {
     employeeRepository.save(employee);
 
-    Employee savedEmployee =
-        employeeRepository.findByNativeSQLNamed(employee.getFirstName(), employee.getLastName());
+    Employee savedEmployee = employeeRepository.findByNativeSQLNamed(
+      employee.getFirstName(),
+      employee.getLastName()
+    );
 
     assertThat(savedEmployee).isNotNull();
   }
@@ -145,17 +168,21 @@ class EmployeeRepositoryTest {
   private List<Employee> createListOfEmployee() {
     List<Employee> employeesList = new ArrayList<>();
     employeesList.add(
-        Employee.builder()
-            .firstName("Marcos")
-            .lastName("Santos")
-            .email("marcos@gmail.com")
-            .build());
+      Employee
+        .builder()
+        .firstName("Marcos")
+        .lastName("Santos")
+        .email("marcos@gmail.com")
+        .build()
+    );
     employeesList.add(
-        Employee.builder()
-            .firstName("Adriano")
-            .lastName("Lopes")
-            .email("adriano@mail.com")
-            .build());
+      Employee
+        .builder()
+        .firstName("Adriano")
+        .lastName("Lopes")
+        .email("adriano@mail.com")
+        .build()
+    );
     return employeesList;
   }
 }

@@ -1,4 +1,4 @@
-package com.meikon.springboottesting.service;
+package com.meikon.springboottesting.unitary.service;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.assertj.core.api.AssertionsForClassTypes.catchThrowableOfType;
@@ -24,28 +24,32 @@ import org.mockito.junit.jupiter.MockitoExtension;
 @ExtendWith(MockitoExtension.class)
 class EmployeeServiceTest {
 
-  @Mock private EmployeeRepository employeeRepository;
+  @Mock
+  private EmployeeRepository employeeRepository;
 
-  @InjectMocks private EmployeeServiceImpl employeeService;
+  @InjectMocks
+  private EmployeeServiceImpl employeeService;
 
   private Employee employee;
 
   @BeforeEach
   void setup() {
     employee =
-        Employee.builder()
-            .id(1L)
-            .firstName("firstName")
-            .lastName("lastName")
-            .email("email@gmail.com")
-            .build();
+      Employee
+        .builder()
+        .id(1L)
+        .firstName("firstName")
+        .lastName("lastName")
+        .email("email@gmail.com")
+        .build();
   }
 
   @DisplayName("JUnit for save employee method")
   @Test
   void givenEmployeeObject_whenSaveEmployee_thenReturnEmployeeObject() {
     // given
-    given(employeeRepository.findByEmail(employee.getEmail())).willReturn(Optional.empty());
+    given(employeeRepository.findByEmail(employee.getEmail()))
+      .willReturn(Optional.empty());
     given(employeeRepository.save(employee)).willReturn(employee);
     // when
     Employee savedEmployee = employeeService.saveEmployee(employee);
@@ -57,29 +61,34 @@ class EmployeeServiceTest {
   @Test
   void givenExistingEmail_whenSaveEmployee_thenThrowsExceptions() {
     // given
-    given(employeeRepository.findByEmail(employee.getEmail())).willReturn(Optional.of(employee));
+    given(employeeRepository.findByEmail(employee.getEmail()))
+      .willReturn(Optional.of(employee));
     // when
-    ResourceNotFoundException thrown =
-        catchThrowableOfType(
-            () -> employeeService.saveEmployee(employee), ResourceNotFoundException.class);
+    ResourceNotFoundException thrown = catchThrowableOfType(
+      () -> employeeService.saveEmployee(employee),
+      ResourceNotFoundException.class
+    );
     // then
     assertThat(thrown)
-        .hasMessage("Employee already exist with given email: " + employee.getEmail())
-        .hasNoCause();
+      .hasMessage(
+        "Employee already exist with given email: " + employee.getEmail()
+      )
+      .hasNoCause();
   }
 
   @DisplayName("JUnit test for get all employees method")
   @Test
   void givenEmployeeList_whenGetAllEmployees_thenReturnEmployeesList() {
     // given
-    var employeeBuild =
-        Employee.builder()
-            .id(2L)
-            .firstName("firstName")
-            .lastName("lastName")
-            .email("email@gmail.com")
-            .build();
-    given(employeeRepository.findAll()).willReturn(List.of(employee, employeeBuild));
+    var employeeBuild = Employee
+      .builder()
+      .id(2L)
+      .firstName("firstName")
+      .lastName("lastName")
+      .email("email@gmail.com")
+      .build();
+    given(employeeRepository.findAll())
+      .willReturn(List.of(employee, employeeBuild));
     // when
     List<Employee> employeeList = employeeService.getAllEmployee();
     // then
@@ -93,7 +102,9 @@ class EmployeeServiceTest {
     // given
     given(employeeRepository.findById(1L)).willReturn(Optional.of(employee));
     // when
-    Employee foundEmployee = employeeService.getEmployeeById(employee.getId()).orElse(null);
+    Employee foundEmployee = employeeService
+      .getEmployeeById(employee.getId())
+      .orElse(null);
 
     // then
     assertThat(foundEmployee).isNotNull();
