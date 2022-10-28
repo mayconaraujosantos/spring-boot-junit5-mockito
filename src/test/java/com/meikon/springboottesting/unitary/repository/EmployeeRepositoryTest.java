@@ -1,10 +1,11 @@
 package com.meikon.springboottesting.unitary.repository;
 
-import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
-
 import com.meikon.springboottesting.domain.entity.Employee;
 import com.meikon.springboottesting.domain.repository.EmployeeRepository;
-import java.util.ArrayList;
+import com.meikon.springboottesting.utils.EmployeeUtils;
+
+import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
+
 import java.util.List;
 import java.util.Optional;
 import org.assertj.core.api.Assertions;
@@ -46,7 +47,7 @@ class EmployeeRepositoryTest {
   @DisplayName("JUnit test for get all employee operation")
   @Test
   void giveEmployeeList_whenFindAll_then() {
-    List<Employee> employee = createListOfEmployee();
+    List<Employee> employee = EmployeeUtils.createListOfEmployee();
     employeeRepository.saveAll(employee);
     List<Employee> employeeList = employeeRepository.findAll();
 
@@ -163,26 +164,5 @@ class EmployeeRepositoryTest {
     );
 
     assertThat(savedEmployee).isNotNull();
-  }
-
-  private List<Employee> createListOfEmployee() {
-    List<Employee> employeesList = new ArrayList<>();
-    employeesList.add(
-      Employee
-        .builder()
-        .firstName("Marcos")
-        .lastName("Santos")
-        .email("marcos@gmail.com")
-        .build()
-    );
-    employeesList.add(
-      Employee
-        .builder()
-        .firstName("Adriano")
-        .lastName("Lopes")
-        .email("adriano@mail.com")
-        .build()
-    );
-    return employeesList;
   }
 }
