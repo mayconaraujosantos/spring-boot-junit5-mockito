@@ -26,4 +26,14 @@ public class EmployeeUtils {
     );
     return employeesList;
   }
+
+  public static Employee buildEmployee() {
+    var employee = Employee
+      .builder()
+      .firstName("Marcos")
+      .lastName("Santos")
+      .email("msantos@gmail.com")
+      .build();
+    return employee;
+  }
 }
